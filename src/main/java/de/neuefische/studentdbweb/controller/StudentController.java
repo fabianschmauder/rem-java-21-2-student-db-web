@@ -15,6 +15,9 @@ public class StudentController {
 
     @GetMapping
     public List<Student> listStudents(@RequestParam Optional<String> search) {
+        if(search.isPresent() && !search.get().isBlank()){
+            return studentService.filterStudentByName(search.get());
+        }
         return studentService.list();
     }
 

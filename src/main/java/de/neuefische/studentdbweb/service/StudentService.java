@@ -2,6 +2,7 @@ package de.neuefische.studentdbweb.service;
 
 import de.neuefische.studentdbweb.model.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,17 @@ public class StudentService {
             }
         }
         return Optional.empty();
+    }
+
+    public List<Student> filterStudentByName(String searchString) {
+        List<Student> filteredStudents = new ArrayList<>();
+
+        for (Student student : students) {
+            if(student.getName().toLowerCase().contains(searchString.toLowerCase())){
+                filteredStudents.add(student);
+            }
+        }
+
+        return filteredStudents;
     }
 }
