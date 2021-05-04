@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +34,13 @@ public class StudentController {
     }
 
     @PutMapping("{id}")
-    public Student addStudent(@PathVariable String id, @RequestBody Student student) {
+    public Student addStudent(@PathVariable String id,
+                              @Valid @RequestBody Student student) {
         if (!id.equals(student.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id not matching");
         }
 
         return studentService.addStudent(student);
     }
+
 }
