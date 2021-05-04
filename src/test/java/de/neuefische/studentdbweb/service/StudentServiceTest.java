@@ -19,19 +19,17 @@ class StudentServiceTest {
     ));
 
     @Test
-    public void listShouldReturnAllStudents(){
+    public void listShouldReturnAllStudents() {
         //WHEN
         List<Student> list = service.list();
 
         //THEN
-        assertThat(list, containsInAnyOrder( new Student("1", "Frank"),
+        assertThat(list, containsInAnyOrder(new Student("1", "Frank"),
                 new Student("2", "Jan")));
-
-
     }
 
     @Test
-    public void findByIdShouldReturnStudentWithMatchingId(){
+    public void findByIdShouldReturnStudentWithMatchingId() {
         //GIVEN
         String idToFind = "2";
         //WHEN
@@ -39,13 +37,12 @@ class StudentServiceTest {
 
         //THEN
         assertThat(student.isPresent(), is(true));
-        assertThat(student.get(), is(  new Student("2", "Jan")));
+        assertThat(student.get(), is(new Student("2", "Jan")));
     }
 
 
-
     @Test
-    public void findByIdShouldReturnEmptyOptionalWhenStudentWithIdNotExists(){
+    public void findByIdShouldReturnEmptyOptionalWhenStudentWithIdNotExists() {
         //GIVEN
         String idToFind = "42";
         //WHEN
@@ -57,7 +54,7 @@ class StudentServiceTest {
 
 
     @Test
-    public void findStudentByNameShouldReturnStudentWithNameContainingSearchString(){
+    public void findStudentByNameShouldReturnStudentWithNameContainingSearchString() {
         //GIVEN
         String searchString = "nk";
 
@@ -65,12 +62,12 @@ class StudentServiceTest {
         List<Student> students = service.filterStudentByName(searchString);
 
         //THEN
-        assertThat(students, containsInAnyOrder( new Student("1", "Frank")));
+        assertThat(students, containsInAnyOrder(new Student("1", "Frank")));
     }
 
 
     @Test
-    public void findStudentByNameShouldReturnStudentWithNameContainingSearchStringIgnoreCase(){
+    public void findStudentByNameShouldReturnStudentWithNameContainingSearchStringIgnoreCase() {
         //GIVEN
         String searchString = "ja";
 
@@ -78,7 +75,24 @@ class StudentServiceTest {
         List<Student> students = service.filterStudentByName(searchString);
 
         //THEN
-        assertThat(students, containsInAnyOrder( new Student("2", "Jan")));
+        assertThat(students, containsInAnyOrder(new Student("2", "Jan")));
+    }
+
+    @Test
+    public void addStudentShouldAddStudentToList() {
+        //GIVEN
+        Student jochen = new Student("42", "Jochen");
+
+        //WHEN
+        Student result = service.addStudent(jochen);
+
+        //THEN
+        Student expectedResult = new Student("42", "Jochen");
+
+        Optional<Student> student = service.findById("42");
+        assertThat(student.isPresent(), is(true));
+        assertThat(student.get(), is(expectedResult));
+        assertThat(result, is(expectedResult));
     }
 
 }

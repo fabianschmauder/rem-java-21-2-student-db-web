@@ -38,4 +38,9 @@ public class StudentService {
 
         return filteredStudents;
     }
+
+    public Student addStudent(Student student){
+        this.students.add(student);
+        return student;
+    }
 }
