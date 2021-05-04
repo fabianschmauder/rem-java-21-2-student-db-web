@@ -19,7 +19,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public Student getStudentFrank(@PathVariable String id) {
+    public Student getStudentById(@PathVariable String id) {
         Optional<Student> optionalStudent = studentService.findById(id);
         return optionalStudent.orElse(null);
     }
