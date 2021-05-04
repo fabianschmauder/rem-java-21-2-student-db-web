@@ -8,10 +8,11 @@ import java.util.Optional;
 
 public class StudentService {
 
-    private final List<Student> students = List.of(
-            new Student("1", "Frank"),
-            new Student("2", "Jan")
-    );
+    private final List<Student> students;
+
+    public StudentService(List<Student> students) {
+        this.students = new ArrayList<>(students);
+    }
 
     public List<Student> list() {
         return students;

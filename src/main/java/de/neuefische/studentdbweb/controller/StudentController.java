@@ -11,7 +11,10 @@ import java.util.Optional;
 @RequestMapping("student")
 public class StudentController {
 
-    private final StudentService studentService = new StudentService();
+    private final StudentService studentService = new StudentService(List.of(
+            new Student("1", "Frank"),
+            new Student("2", "Jan")
+    ));
 
     @GetMapping
     public List<Student> listStudents(@RequestParam Optional<String> search) {
