@@ -1,6 +1,8 @@
 package de.neuefische.studentdbweb.service;
 
 import de.neuefische.studentdbweb.model.Student;
+import de.neuefische.studentdbweb.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,25 +12,26 @@ import java.util.Optional;
 @Service
 public class StudentService {
 
-    private final List<Student> students = new ArrayList<>();
+
+    private final StudentRepository studentRepository;
+
+    @Autowired
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public List<Student> list() {
-        return students;
+        return studentRepository.list();
     }
 
     public Optional<Student> findById(String id) {
-        for (Student student : students) {
-            if(student.getId().equals(id)){
-                return Optional.of(student);
-            }
-        }
-        return Optional.empty();
+       return studentRepository.findById(id);
     }
 
     public List<Student> filterStudentByName(String searchString) {
         List<Student> filteredStudents = new ArrayList<>();
 
-        for (Student student : students) {
+        for (Student student : studentRepository.list()) {
             if(student.getName().toLowerCase().contains(searchString.toLowerCase())){
                 filteredStudents.add(student);
             }
@@ -38,7 +41,6 @@ public class StudentService {
     }
 
     public Student addStudent(Student student){
-        this.students.add(student);
-        return student;
+        return this.studentRepository.addStudent(student);
     }
 }

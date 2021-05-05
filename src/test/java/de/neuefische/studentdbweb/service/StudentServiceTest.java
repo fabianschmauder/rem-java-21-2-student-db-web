@@ -1,6 +1,7 @@
 package de.neuefische.studentdbweb.service;
 
 import de.neuefische.studentdbweb.model.Student;
+import de.neuefische.studentdbweb.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,7 +13,8 @@ import static org.hamcrest.Matchers.is;
 
 class StudentServiceTest {
 
-    private final StudentService service = new StudentService();
+    private final StudentRepository studentRepository = new StudentRepository();
+    private final StudentService service = new StudentService(studentRepository);
 
     @Test
     public void listShouldReturnAllStudents() {
