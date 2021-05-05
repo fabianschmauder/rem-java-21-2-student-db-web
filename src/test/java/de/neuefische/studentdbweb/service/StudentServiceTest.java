@@ -12,14 +12,14 @@ import static org.hamcrest.Matchers.is;
 
 class StudentServiceTest {
 
-
-    private final StudentService service = new StudentService(List.of(
-            new Student("1", "Frank"),
-            new Student("2", "Jan")
-    ));
+    private final StudentService service = new StudentService();
 
     @Test
     public void listShouldReturnAllStudents() {
+        //GIVEN
+        service.addStudent(new Student("1", "Frank"));
+        service.addStudent(new Student("2", "Jan"));
+
         //WHEN
         List<Student> list = service.list();
 
@@ -31,7 +31,10 @@ class StudentServiceTest {
     @Test
     public void findByIdShouldReturnStudentWithMatchingId() {
         //GIVEN
+        service.addStudent(new Student("1", "Frank"));
+        service.addStudent(new Student("2", "Jan"));
         String idToFind = "2";
+
         //WHEN
         Optional<Student> student = service.findById(idToFind);
 
@@ -44,6 +47,8 @@ class StudentServiceTest {
     @Test
     public void findByIdShouldReturnEmptyOptionalWhenStudentWithIdNotExists() {
         //GIVEN
+        service.addStudent(new Student("1", "Frank"));
+        service.addStudent(new Student("2", "Jan"));
         String idToFind = "42";
         //WHEN
         Optional<Student> student = service.findById(idToFind);
@@ -56,6 +61,8 @@ class StudentServiceTest {
     @Test
     public void findStudentByNameShouldReturnStudentWithNameContainingSearchString() {
         //GIVEN
+        service.addStudent(new Student("1", "Frank"));
+        service.addStudent(new Student("2", "Jan"));
         String searchString = "nk";
 
         //WHEN
@@ -69,6 +76,9 @@ class StudentServiceTest {
     @Test
     public void findStudentByNameShouldReturnStudentWithNameContainingSearchStringIgnoreCase() {
         //GIVEN
+
+        service.addStudent(new Student("1", "Frank"));
+        service.addStudent(new Student("2", "Jan"));
         String searchString = "ja";
 
         //WHEN

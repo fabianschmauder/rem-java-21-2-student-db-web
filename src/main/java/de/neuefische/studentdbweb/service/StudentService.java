@@ -1,18 +1,16 @@
 package de.neuefische.studentdbweb.service;
 
 import de.neuefische.studentdbweb.model.Student;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class StudentService {
 
-    private final List<Student> students;
-
-    public StudentService(List<Student> students) {
-        this.students = new ArrayList<>(students);
-    }
+    private final List<Student> students = new ArrayList<>();
 
     public List<Student> list() {
         return students;
