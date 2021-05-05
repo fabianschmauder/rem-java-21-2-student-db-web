@@ -33,7 +33,10 @@ public class StudentController {
     @GetMapping("{id}")
     public Student getStudentById(@PathVariable String id) {
         Optional<Student> optionalStudent = studentService.findById(id);
-        return optionalStudent.orElse(null);
+        if(optionalStudent.isPresent()){
+            return optionalStudent.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "student with id "+id+ " not found");
     }
 
     @PutMapping("{id}")
