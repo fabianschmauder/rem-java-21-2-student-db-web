@@ -1,6 +1,7 @@
 package de.neuefische.studentdbweb.service;
 
 import de.neuefische.studentdbweb.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +14,12 @@ import java.util.Optional;
 public class UserApiService {
     private final String jsonPlaceholderUsersUrl = "https://jsonplaceholder.typicode.com/users";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public UserApiService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public Optional<User> getUserById(String id) {
         String jsonPlaceholderUrl = jsonPlaceholderUsersUrl + "/" + id;
