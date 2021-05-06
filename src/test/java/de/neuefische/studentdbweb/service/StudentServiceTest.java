@@ -10,17 +10,20 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 class StudentServiceTest {
 
-    private final StudentRepository studentRepository = new StudentRepository();
+    private final StudentRepository studentRepository = mock(StudentRepository.class);
     private final StudentService service = new StudentService(studentRepository);
 
     @Test
-    public void listShouldReturnAllStudents() {
+    public void listShouldReturnAllStudentsFromRepository() {
         //GIVEN
-        service.addStudent(new Student("1", "Frank"));
-        service.addStudent(new Student("2", "Jan"));
+        when(studentRepository.list()).thenReturn(List.of(
+                new Student("1", "Frank"),
+                new Student("2", "Jan")
+        ));
 
         //WHEN
         List<Student> list = service.list();
@@ -31,10 +34,9 @@ class StudentServiceTest {
     }
 
     @Test
-    public void findByIdShouldReturnStudentWithMatchingId() {
+    public void findByIdShouldCallAndReturnFindByIdOnRepository() {
         //GIVEN
-        service.addStudent(new Student("1", "Frank"));
-        service.addStudent(new Student("2", "Jan"));
+        when(studentRepository.findById("2")).thenReturn(Optional.of(new Student("2", "Jan")));
         String idToFind = "2";
 
         //WHEN
@@ -45,26 +47,13 @@ class StudentServiceTest {
         assertThat(student.get(), is(new Student("2", "Jan")));
     }
 
-
-    @Test
-    public void findByIdShouldReturnEmptyOptionalWhenStudentWithIdNotExists() {
-        //GIVEN
-        service.addStudent(new Student("1", "Frank"));
-        service.addStudent(new Student("2", "Jan"));
-        String idToFind = "42";
-        //WHEN
-        Optional<Student> student = service.findById(idToFind);
-
-        //THEN
-        assertThat(student.isPresent(), is(false));
-    }
-
-
     @Test
     public void findStudentByNameShouldReturnStudentWithNameContainingSearchString() {
         //GIVEN
-        service.addStudent(new Student("1", "Frank"));
-        service.addStudent(new Student("2", "Jan"));
+        when(studentRepository.list()).thenReturn(List.of(
+                new Student("1", "Frank"),
+                new Student("2", "Jan")
+        ));
         String searchString = "nk";
 
         //WHEN
@@ -79,8 +68,10 @@ class StudentServiceTest {
     public void findStudentByNameShouldReturnStudentWithNameContainingSearchStringIgnoreCase() {
         //GIVEN
 
-        service.addStudent(new Student("1", "Frank"));
-        service.addStudent(new Student("2", "Jan"));
+        when(studentRepository.list()).thenReturn(List.of(
+                new Student("1", "Frank"),
+                new Student("2", "Jan")
+        ));
         String searchString = "ja";
 
         //WHEN
@@ -91,20 +82,18 @@ class StudentServiceTest {
     }
 
     @Test
-    public void addStudentShouldAddStudentToList() {
+    public void addStudentShouldAddStudentToRepository() {
         //GIVEN
         Student jochen = new Student("42", "Jochen");
+        when(studentRepository.addStudent(new Student("42", "Jochen"))).thenReturn(jochen);
 
         //WHEN
         Student result = service.addStudent(jochen);
 
         //THEN
         Student expectedResult = new Student("42", "Jochen");
-
-        Optional<Student> student = service.findById("42");
-        assertThat(student.isPresent(), is(true));
-        assertThat(student.get(), is(expectedResult));
         assertThat(result, is(expectedResult));
+        verify(studentRepository).addStudent(new Student("42", "Jochen"));
     }
 
 }
