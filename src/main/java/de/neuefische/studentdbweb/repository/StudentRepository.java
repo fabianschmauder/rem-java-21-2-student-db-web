@@ -30,4 +30,8 @@ public class StudentRepository {
         this.students.add(student);
         return student;
     }
+
+    public void clear() {
+        students.clear();
+    }
 }
